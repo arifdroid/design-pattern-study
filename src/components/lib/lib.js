@@ -1,8 +1,6 @@
 
 import React from 'react'
 import { jsx } from '@emotion/core'
-// import posed from 'react-pose'
-// import styled from '@emotion/styled/macro'
 import styled from 'styled-components';
 import { motion } from "framer-motion"
 
@@ -41,10 +39,7 @@ function AccordionContents({ isOpen, ...props }) {
     return (
         <motion.div
             // pose={isOpen ? 'open' : 'closed'}
-            animate={isOpen ? { maxHeight: 200, opacity: 1, scale: 1 } : { maxHeight: 0, opacity: 0, scale: 0 }}
-            // initial={{ opacity: 0 }}
-            // animate={{ opacity: 1 }}
-            // exit={{ opacity: 0 }}
+            animate={isOpen ? { maxHeight: 200, opacity: 1, } : { maxHeight: 0, opacity: 0,  }}            
             transition={{ duration: 0.5 }}
             {...props}
         />

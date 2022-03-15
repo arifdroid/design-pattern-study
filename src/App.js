@@ -9,6 +9,7 @@ import {
   TabItems,
   TabButtons,
 } from './components/lib/lib.js'
+import { SampleRenderProp } from './components/samplerenderprop/SampleRenderProp.jsx'
 
 // use-accordion.js
 const actionTypes = { toggle_index: 'toggle_index' }
@@ -173,7 +174,7 @@ function App() {
         marginTop: 60,
       }}
     >
-      <Accordion items={items} reducer={singleReducer}/>
+      {/* <SampleRenderProp data={items} renderItem={({ item, index }) => <div key={index}>{item?.title}</div>} /> */}
     </div>
   )
 }
