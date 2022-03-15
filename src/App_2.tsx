@@ -1,43 +1,33 @@
 import React, { ComponentType, useState } from 'react'
 
-// withToggle , HOC 
-//component that accepts other component 
+//the problem with render prop pattern 
+//when we re run function component
+//all will be rerender,
+//the argument to toggle render, gonna be new function , not constant identity ,
+//gonna prevent react being able to do react magic, react re-render 
+// 
+
+//render props makes it easy to add more data/ props 
+
+//drawback is performance ,
+//cant memoize, cant use hook directly inside callback function
+
+
 
 type ToggleProp = {
   isOpen: boolean,
   toggle: () => void
 }
 
-//the logic part we abstract out into HOC
-const withToggle = (Component: ComponentType<ToggleProp>) => {
-  //return function of the stateful
-  return (
-    () => {
-      const [isOpen, setOpen] = useState(true)
+const ToggleRender = ({ children }: { children: any }) => {
+  const [isOpen, setOpen] = useState(true)
 
-      const toggle = () => {
-        setOpen(isOpen => !isOpen)
-      }
+  const toggle = () => {
+    setOpen(isOpen => !isOpen)
+  }
 
-      return <Component isOpen={isOpen} toggle={toggle}></Component>
-    }
-  )
-
+  return children({ isOpen, toggle })
 }
-
-//the view layer , the dumb component , only responsible for render
-//does not care of the props
-const DropdownViewLayer: React.FC<ToggleProp> = ({ isOpen, toggle }) => {
-  return (
-    <>
-      <div onClick={toggle}>Dropdown</div>
-      <>{isOpen && <div>this is the dropdown</div>}</>
-    </>
-  )
-}
-
-const Dropdown = withToggle(DropdownViewLayer)
-
 // ===== original function =======
 
 // const Toggle_Function = ({ }) => {
@@ -56,7 +46,17 @@ const App_2 = () => {
   return (
     <div>
 
-      <Dropdown />
+      {/* <ToggleRender
+        //cannot add hook inside this
+        //because gonna be different function next time 
+        render={({ isOpen, toggle }: ToggleProp) => <div onClick={toggle}>Render Prop {isOpen ? 'Pattern' : ''}</div>
+        } /> */}
+
+      <ToggleRender
+      //cannot add hook inside this
+      //because gonna be different function next time 
+      // change ::  render -> children
+      >{({ isOpen, toggle }: ToggleProp) => <div onClick={toggle}>Render Prop {isOpen ? 'Pattern' : ''}</div>}</ToggleRender>
     </div>
   )
 }
