@@ -1,16 +1,9 @@
 import React, { ComponentType, useState } from 'react'
 
-//the problem with render prop pattern 
-//when we re run function component
-//all will be rerender,
-//the argument to toggle render, gonna be new function , not constant identity ,
-//gonna prevent react being able to do react magic, react re-render 
-// 
+//hooks to include stateful logic and function component 
+//eliminate burden support class based component 
 
-//render props makes it easy to add more data/ props 
-
-//drawback is performance ,
-//cant memoize, cant use hook directly inside callback function
+//easy and accessible escape hatch for sharing stateful logic
 
 
 
@@ -19,15 +12,27 @@ type ToggleProp = {
   toggle: () => void
 }
 
-const ToggleRender = ({ children }: { children: any }) => {
+//this is custom hook
+//now we can use the same custom hook with other 
+const useToggle = () => {
   const [isOpen, setOpen] = useState(true)
-
   const toggle = () => {
     setOpen(isOpen => !isOpen)
   }
+  //as const -> so typescript to treat these as pair , an array with two types in it
+  //[ boolean , function ]
+  return [isOpen, toggle] as const;
 
-  return children({ isOpen, toggle })
 }
+
+
+const Checkbox = () => {
+  const [isOpen, toggle] = useToggle();
+  return (
+    <input type='checkbox' checked={isOpen} onClick={toggle} />
+  )
+}
+
 // ===== original function =======
 
 // const Toggle_Function = ({ }) => {
@@ -45,18 +50,8 @@ const ToggleRender = ({ children }: { children: any }) => {
 const App_2 = () => {
   return (
     <div>
+      <Checkbox />
 
-      {/* <ToggleRender
-        //cannot add hook inside this
-        //because gonna be different function next time 
-        render={({ isOpen, toggle }: ToggleProp) => <div onClick={toggle}>Render Prop {isOpen ? 'Pattern' : ''}</div>
-        } /> */}
-
-      <ToggleRender
-      //cannot add hook inside this
-      //because gonna be different function next time 
-      // change ::  render -> children
-      >{({ isOpen, toggle }: ToggleProp) => <div onClick={toggle}>Render Prop {isOpen ? 'Pattern' : ''}</div>}</ToggleRender>
     </div>
   )
 }
