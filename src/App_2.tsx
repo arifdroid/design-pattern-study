@@ -26,6 +26,7 @@ const withToggle = (Component: ComponentType<ToggleProp>) => {
 }
 
 //the view layer , the dumb component , only responsible for render
+//does not care of the props
 const DropdownViewLayer: React.FC<ToggleProp> = ({ isOpen, toggle }) => {
   return (
     <>
