@@ -8,7 +8,7 @@ type ToggleProp = {
   toggle: () => void
 }
 
-//
+//the logic part we abstract out into HOC
 const withToggle = (Component: ComponentType<ToggleProp>) => {
   //return function of the stateful
   return (
@@ -25,7 +25,7 @@ const withToggle = (Component: ComponentType<ToggleProp>) => {
 
 }
 
-
+//the view layer , the dumb component , only responsible for render
 const DropdownViewLayer: React.FC<ToggleProp> = ({ isOpen, toggle }) => {
   return (
     <>
